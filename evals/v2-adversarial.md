@@ -130,7 +130,7 @@
 
 ## 煙霧測試（未計分）
 
-2026-11-23，用 v2 扁平版（`v2/dist/grok-agent.zh-Hant.txt`）跑案例 1 與案例 2，模型 deepseek-flash，單輪。
+2026-11-23，用 v2 扁平版（`dist/v2/grok-agent.zh-Hant.txt`）跑案例 1 與案例 2，模型 deepseek-flash，單輪。
 
 - 兩條都完整出齊六段，冇漏「提醒」。
 - 案例 1（P 對等、無制度後果）冇加「先確認三問」，符合高風險才加的設計。

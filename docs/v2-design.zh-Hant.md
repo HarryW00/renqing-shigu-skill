@@ -171,7 +171,7 @@ v1 遇到這些只能重新生成一次婉拒，力度一樣，於是變成原�
 | `v2/references/second-move.md` | 六類 × 3 句，香港／大陸各一欄 | 完成 |
 | `v2/references/register.md` | 第 7 節的完整版＋粵語用字界線 | 完成 |
 | `v2/references/openers.md` | 六個開場場景＋渠道選擇 | v2.1 之前先做，因為用戶要求 |
-| `v2/dist/grok-agent.zh-Hant.txt` | 扁平版 | 2,353 字元 |
+| `dist/v2/grok-agent.zh-Hant.txt` | 扁平版 | 2,353 字元 |
 | `evals/v2-adversarial.md` | 八條案例＋rubric | 完成，未跑對照 |
 
 兩處與原設計不同：

@@ -48,7 +48,7 @@ TARGETS = [
     {
         "name": "v1",
         "source": "SKILL.zh-Hant.md",
-        "out": "dist/grok-agent.zh-Hant.txt",
+        "out": "dist/v1/grok-agent.zh-Hant.txt",
         "header": HEADER_V1,
         "budget": 4000,
         "markers": ["先接住", "公開給面子", "說死", "留證據", "紅線"],
@@ -56,7 +56,7 @@ TARGETS = [
     {
         "name": "v2",
         "source": "v2/SKILL.md",
-        "out": "v2/dist/grok-agent.zh-Hant.txt",
+        "out": "dist/v2/grok-agent.zh-Hant.txt",
         "header": HEADER_V2,
         "budget": 4000,
         "markers": ["五格", "第二手", "開場", "提醒", "紅線"],
@@ -65,14 +65,14 @@ TARGETS = [
 
 # 手寫檔：只檢查預算和標記，不生成、不覆蓋。
 HANDWRITTEN = {
-    "dist/grok-custom-instructions.zh-Hant.txt": (
+    "dist/v1/grok-custom-instructions.zh-Hant.txt": (
         4000,
         ["先接住", "公開給面子", "說死", "留證據", "紅線"],
     ),
 }
 
 # 起手式只是外殼，本身不含規則，所以只檢查它有沒有叫對方去跟 skill 全文。
-BOOTSTRAP = "dist/chat-bootstrap.zh-Hant.md"
+BOOTSTRAP = "dist/v1/chat-bootstrap.zh-Hant.md"
 
 
 def load_body(path: Path) -> str:

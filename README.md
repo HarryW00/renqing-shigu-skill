@@ -1,296 +1,153 @@
 <div align="center">
 
 # 人情世故.skill
+### 繁體版 · 互動版
 
-> *“中国语境下的高情商，不是会来事，是既把事办了，也把人安顿好。”*
+> 「中國語境下的高情商，不是會來事，是既把事辦了，也把人安頓好。」
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
-[![Claude Code](https://img.shields.io/badge/Claude%20Code-Skill-blueviolet)](https://claude.ai/code)
 [![AgentSkills](https://img.shields.io/badge/AgentSkills-Standard-green)](https://agentskills.io)
-[![Made for Chinese Context](https://img.shields.io/badge/Context-China-red)](#人情世故到底是什么)
-
-<br>
-
-领导半夜在群里发通知，你回“收到”还是装没看见？<br>
-熟人介绍的相亲不合适，怎么拒绝才不让介绍人难做？<br>
-同事吃饭遇到 AA、轮请、地主之谊三套规则混在一起，怎么开口才不尴尬？<br>
-你其实想拒绝、想反对、想划清边界，但又不想把关系搞僵？<br>
-
-**把“会说话”升级成“会处理关系”。
-让任何 AI 在中国语境下，既懂面子，也懂分寸，还懂边界。**
-
-<br>
-
-一句话描述场景，或直接贴聊天记录、会议原话、饭局邀请、家族群对话。<br>
-`人情世故.skill` 会先判断关系结构，再给你一版**不失礼、不吃亏、不留后患**的响应。
-
-[安装](#安装) · [使用](#使用) · [效果示例](#效果示例) · [人情世故到底是什么](#人情世故到底是什么) · [真实案例测试](#真实案例测试)
+[![Fork](https://img.shields.io/badge/Fork-of%20IvyYang1999-blue)](https://github.com/IvyYang1999/renqing-shigu-skill)
 
 </div>
 
 ---
 
-## 效果示例
+這是 [IvyYang1999/renqing-shigu-skill](https://github.com/IvyYang1999/renqing-shigu-skill) 的 fork。上游教你**把一句話講得體**；這個 fork 做三件事：
 
-**场景 1：领导深夜群发通知，要求大家“收到回复”**
+1. **繁體版** —— 全文繁體，另分香港與大陸兩種 register。
+2. **可以直接貼進聊天框** —— Grok 網頁、Meta Muse、ChatGPT 這類讀不到檔案的介面，有現成扁平版。
+3. **v2 互動版（實驗中）** —— 由「潤色一句話」升級成「判斷局勢、給第二手、揀渠道、留痕」。
 
-```
-用户        ❯ 晚上 10 点领导在群里发“明天开始取消调休，所有人收到回复”，
-              我不想显得太狗腿，也不想第二天被挑刺，怎么回？
+上游 `SKILL.md` 一字未改，所以這個 fork 仍然可以同上游合併。
 
-人情世故.skill ❯ 回一句短的，不展开：
-                “收到，明早我再同步一下自己这边安排。”
+## 五分鐘上手
 
-                这句有三个作用：
-                1. 给到领导最想要的“已接收”
-                2. 不在深夜继续把对话往工作细节上引
-                3. 给自己留了一个白天再处理的缓冲
-```
+| 你手上有的 | 怎樣做 |
+|---|---|
+| Claude Code / Grok Build / Muse Code | `git clone https://github.com/HarryW00/renqing-shigu-skill ~/.agents/skills/renqing-shigu` |
+| 只有網頁版（Grok、Muse、ChatGPT） | 貼上 `dist/v1/grok-custom-instructions.zh-Hant.txt`（1,321 字元） |
+| 想自己改規則 | 改 `SKILL.md` 或 `v2/SKILL.md`，再跑 `python scripts/build_dist.py` |
 
-**场景 2：想反对领导方案，但不想在会上把人顶住**
+## v1 與 v2
 
-```
-用户        ❯ 我觉得领导方案不对，但会上直接说“这个不行”风险太高。
+| | **v1**（穩定） | **v2**（候選） |
+|---|---|---|
+| 判斷方式 | 七個場景規則 | 五個變量：權力差、依賴方向、觀眾、可逆性、未來互動 |
+| 動作 | 換措辭 | 換措辭、改結構、改規則 |
+| 輸出 | 一句話＋備選＋解釋 | 六段：判斷、句子、第二手、渠道、留痕、提醒 |
+| 適合 | 即時回一句 | 多輪、重複發生、要主動開場 |
+| 扁平版 | 3,580 字元 | 2,353 字元 |
+| 狀態 | 可直接用 | [PR #1](https://github.com/HarryW00/renqing-shigu-skill/pull/1)，八條對照未跑完 |
 
-人情世故.skill ❯ 别先否定，先对齐目标，再补风险：
-                “我理解您是想先把节奏抢出来，这个方向我认同。
-                我这边补充一个落地风险：如果按现在这个方案直接上，
-                联调和回滚预案会比较被动。要不我准备一个保节奏、
-                但风险更低的版本，您拍板？”
-```
+v2 補上的三塊：
 
-**场景 3：熟人介绍的相亲不合适**
+- **第二手** —— 對方否認意圖、施壓、情緒、搵中間人、公開將軍、翻舊帳，各有回應骨架。
+- **開場** —— 求助、提反對、劃界、修補、拒絕前、事後收口。
+- **提醒** —— 每次回覆結尾一句「AI 睇唔到全貌，你自己再斟酌」；高風險場景加「先確認三問」。
 
-```
-用户        ❯ 介绍人是长辈，女生人不错，但我不想继续了，怎么说？
+## 同一個場景，兩版怎樣答
 
-人情世故.skill ❯ 先谢介绍人，再把原因揽到“节奏和状态”上，不点评对方：
-                “这次真的辛苦您费心了，对方挺好的，也很真诚。
-                主要还是我自己现在状态和节奏不太适合往下推进，
-                怕耽误人家，所以想先到这里。也麻烦您替我带个谢意。”
-```
+同事第三次叫你頂夜更。
 
-**场景 4：同事出差吃饭，AA 和轮请制理解不一致**
+**v1**
 
-```
-用户        ❯ 我已经先付了三顿，同事没人提钱，现在再说 AA 会不会很小气？
+> 你開口我肯定想幫，但這次確實接不住；勉強答應，後面做不到反而更耽誤你。
 
-人情世故.skill ❯ 不追旧账式发作，改成“顺手对一下”：
-                “这几顿我先垫了，怕大家后面忘记，我把账单一起发群里，
-                咱们顺手对一下就行。要是大家习惯轮请也没事，
-                提前说一声我下次就按这个规则来。”
-```
+**v2**
 
-**场景 5：同事老来打断你，但你又不能不理**
+> **判斷**：對等同事、他求你、第三次、私下。目標唔止拒一次，而係斷「每次問你」呢個模式。
+>
+> **可以直接用**：「阿 Ken，今次我真係接唔到。之前兩次係咁啱我鬆啲，我唔想做成慣例 — 以後排更嘅事你直接同阿頭講，唔好預我。」
+>
+> **第二手**：「吓，之前又得？」→「之前得係因為情況唔同，我唔想每次都解釋一次。」
+>
+> **渠道**：私下文字，今日內，唔好等到佢問第三次。
+>
+> **提醒**：以上係按你講嘅情況推嘅，實際關係同語氣你自己再斟酌。
 
-```
-用户        ❯ 我在专注写东西，不回别人显得情商低，回了又被打断。
+差別唔在形容詞，在**動作** — v2 換嘅係關係均衡。
 
-人情世故.skill ❯ 不消失，也不立刻接单：
-                “我这会儿在收尾一个东西，大概 30 分钟后回你。
-                如果特别急，你先把问题和截止时间发我，我优先看。”
-```
+## 安裝
 
----
-
-## 安装
-
-### Claude Code
+### CLI（Claude Code / Grok Build / Muse Code）
 
 ```bash
-# 安装到当前项目
-mkdir -p .claude/skills
-git clone https://github.com/IvyYang1999/renqing-shigu-skill .claude/skills/renqing-shigu
+# v1
+git clone https://github.com/HarryW00/renqing-shigu-skill ~/.agents/skills/renqing-shigu
 
-# 或安装到全局
-git clone https://github.com/IvyYang1999/renqing-shigu-skill ~/.claude/skills/renqing-shigu
+# v2（名稱為 renqing-shigu-v2，可與 v1 並存）
+git clone https://github.com/HarryW00/renqing-shigu-skill /tmp/renqing
+cp -R /tmp/renqing/v2 ~/.agents/skills/renqing-shigu-v2
+
+muse skills list     # 應見到 renqing-shigu 與 renqing-shigu-v2
 ```
 
-### 其他支持 Skills 的 AI CLI
+Grok Build 裡面輸入 `/skills`，或直接 `/renqing-shigu`。
 
-把本仓库 clone 到对应的 skills 目录即可。
+### 聊天框
 
-### Grok / Muse / 纯聊天框
+| 平台 | 用哪個檔案 |
+|---|---|
+| Grok 網頁 / X app | `dist/v1/grok-custom-instructions.zh-Hant.txt`，貼入 Custom Instructions 或專用 Custom Agent |
+| Meta Muse app | `dist/v1/chat-bootstrap.zh-Hant.md` ＋ skill 全文 |
+| ChatGPT / Gemini / Claude 網頁 | 同上 |
 
-- **Grok Build** 和 **Muse Code** 直接读这份 `SKILL.md`，不用改任何东西（两者都会扫描 `~/.claude/skills`；Muse Code 另外读 `~/.agents/skills`）。
-- **Grok 网页版**的 Custom Instructions、**Meta Muse app** 这类没有文件系统的客户端读不了 skill 文件，请用 [`dist/`](dist/) 里压平好的繁體版本。
-- 实验中的 **v2** 在 [`v2/`](v2/)：五变量判断、第二手回应、开场模块，扁平版约 2,350 字元，未取代 v1。
+分平台步驟、字數上限、踩坑記錄：[docs/portable.zh-Hant.md](docs/portable.zh-Hant.md) · [English](docs/portable.en.md)
 
-分平台步骤、字数上限和踩坑记录见 [docs/portable.md](docs/portable.md)（繁體）· [English](docs/portable.en.md)。
-
----
-
-## 使用
-
-在 Claude Code 里输入：
+## 專案結構
 
 ```text
-/renqing-shigu
+.
+├── SKILL.md                     # 上游簡體原文，v1 本體（未改動）
+├── SKILL.zh-Hant.md             # v1 繁體版（OpenCC + 人工校訂）
+├── v2/
+│   ├── SKILL.md                 # v2 互動版
+│   └── references/              # 第二手、register、開場例句
+├── dist/
+│   ├── v1/                      # 可直接貼上：Custom Instructions、起手式、全文
+│   └── v2/                      # 可直接貼上：v2 全文
+├── docs/                        # 平台說明、v2 設計稿
+├── evals/                       # 上游案例測試 + v2 對抗案例
+├── references/                  # 上游理論與真實案例
+├── examples/                    # 上游速查
+└── scripts/                     # 繁體同步、扁平版生成與校驗
 ```
 
-或者直接描述场景：
+## 開發
 
-```text
-帮我把这句话说得更有人情世故一点
-领导在群里这么说，我该怎么回
-我想拒绝一个熟人请求，但不想闹僵
-帮我润色成中国语境下高情商的说法
+```bash
+python scripts/build_dist.py          # 生成 dist/v1 與 dist/v2
+python scripts/build_dist.py --check  # 只校驗，CI 用的就是這個
+python scripts/sync_hant.py           # 上游更新後重新產生繁體版（需 opencc）
 ```
 
-### 推荐输入格式
+- v1 的規則只改 `SKILL.md`；改完要同步繁體版，否則 CI 會紅。
+- 繁體用字修正請加進 `sync_hant.py` 的 `NORMALIZE`，否則下次同步會被 OpenCC 改回去。
+- v2 直接用繁體寫，沒有同步問題。
+- 扁平版有字數預算（4,000 字元）和關鍵規則標記，兩個都由腳本檢查。
 
-```
-关系：对方是谁，和我什么关系
-场景：发生在群里/私聊/饭局/会议/家庭场合
-目标：我真正想达到什么
-底线：我不能接受什么
-原话：如果有，直接贴
-```
+## 人情世故是什麼
 
-### Skill 会做什么
+不是教 AI 變油滑，而是理解三件互相糾纏的事：
 
-1. 先判断关系结构：上下级、亲疏远近、公开私下、欠情与还情。
-2. 再判断表达策略：给面子、留台阶、设边界、推迟表态、软拒绝、硬拒绝。
-3. 最后输出一版可直接复制的话，并解释为什么这么说。
-
----
-
-## 人情世故到底是什么
-
-这个 skill 不是教 AI 变油滑，而是让 AI 理解中国语境里三件彼此纠缠的事：
-
-| 维度 | 核心问题 | 在表达上的体现 |
+| 維度 | 核心問題 | 在表達上的體現 |
 |---|---|---|
-| **关系** | 你和对方是什么关系，未来还要不要来往？ | 不能只看字面，要看角色和后续 |
-| **面子** | 这句话会不会让人当场下不来台？ | 公开场合先顾体面，问题私下说 |
-| **人情** | 这次是谁在帮谁，之后要不要留余地？ | 拒绝可以，但别把路堵死 |
+| **關係** | 你和對方是什麼關係，之後仲要唔要來往？ | 唔止睇字面，要睇角色同後續 |
+| **面子** | 這句話會唔會令人當場落唔到台？ | 公開場合先顧體面，問題私下講 |
+| **人情** | 今次邊個幫邊個，之後要唔要留餘地？ | 可以拒絕，但唔好堵死條路 |
 
-基于学术研究和大量现实案例，这个 skill 采用一个更实操的定义：
+一句話：**在關係網絡裡，用合適的體面和邊界，把事情推進。** 唔係永遠順着人，而係先接住對方、再表達自己；公開給面子、私下講條件；講得清拒絕，但唔把人講死。
 
-**人情世故 = 在关系网络里，用合适的体面和边界，把事情推进。**
+## 案例與測試
 
-它不是“永远顺着别人”，而是：
+- 上游五個真實案例：[`references/cases.md`](references/cases.md)、[`evals/case-tests.md`](evals/case-tests.md)
+- v2 八條對抗案例與評分方法：[`evals/v2-adversarial.md`](evals/v2-adversarial.md)
 
-- 先接住对方，再表达自己
-- 公开给面子，私下讲条件
-- 能说清拒绝，但不把人说死
-- 小事不抠到伤感情，大事不糊涂到伤自己
-- 既知道什么时候该热情，也知道什么时候该装糊涂
+## 致謝與授權
 
----
+規則、案例與原始說明來自 [IvyYang1999](https://github.com/IvyYang1999/renqing-shigu-skill)，功勞屬於原作者。上游 README 的簡體原文可在該倉庫閱讀，本頁是按新結構重寫的繁體版。
 
-## 核心能力
-
-### 1. 关系判断
-
-- 判断对方是领导、客户、长辈、平级同事、熟人、介绍人还是陌生人
-- 判断这段关系是一次性的，还是长期反复合作
-- 判断当前是要“推进事情”、还是“维护关系”、还是“两者都要”
-
-### 2. 面子管理
-
-- 公开场合不让对方难堪
-- 拒绝时不点评对方，只说明自己的限制
-- 不在群里直接拆台，不让别人被迫立即认错
-
-### 3. 边界表达
-
-- 会说“不”，但不说成“你不对”
-- 会拖延表态，为自己争取时间
-- 会把模糊帮忙改成明确边界和明确截止时间
-
-### 4. 协作措辞
-
-- 领导消息先回执，再处理
-- 同事求助先给时间预期，再给支持方式
-- 会议反对先对齐目标，再补充风险或备选方案
-
-### 5. 红线识别
-
-这个 skill 不服务于：
-
-- 行贿、利益输送、违规送礼
-- 情感操控、PUA、道德绑架
-- 用“高情商”包装不合规指令
-- 用模糊话术迫使别人背锅
-
-它主张的是**有分寸的善意**，不是**漂亮的操控**。
-
----
-
-## 真实案例测试
-
-为了避免这个 skill 只会说漂亮话，我用联网搜到的真实案例做了首轮测试。完整记录见：
-
-- [references/cases.md](references/cases.md)
-- [evals/case-tests.md](evals/case-tests.md)
-
-### 覆盖的真实场景
-
-| 案例 | 来源 | 测什么 |
-|---|---|---|
-| 深夜工作群要求“收到回复” | 澎湃新闻，2024-12-04 | 回执、留痕、不过度展开 |
-| 熟人和长辈推动相亲 | V2EX 真实求助帖 | 拒绝时如何保全面子 |
-| 会上和领导方案相左 | V2EX 真实职场帖 | 公开场合怎么提反对意见 |
-| 出差同事吃饭，AA 和轮请制冲突 | V2EX 真实讨论帖 | 金钱边界怎么讲得不伤人 |
-| 专注做事时不回同事消息 | V2EX 真实讨论帖 | 不冷场，也不立刻接单 |
-
-### 测试结论
-
-`人情世故.skill` 在这些案例里，不追求“完美圆滑”，而是稳定做到：
-
-- 先回应关系，再回应事情
-- 先处理体面，再处理分歧
-- 先给对方可接受的解释，再给自己的边界
-- 不把一句话说死，给双方都留台阶
-
----
-
-## 仓库结构
-
-```text
-renqing-shigu-skill/
-├── SKILL.md              # Skill 主体（上游简体原文）
-├── SKILL.zh-Hant.md      # 繁體版（OpenCC 转换 + 人工校订）
-├── README.md             # 项目说明
-├── dist/                 # 给聊天框用的扁平版（繁體，可直接粘贴）
-├── docs/                 # Grok / Muse / 其他平台适配说明
-├── scripts/              # 繁體同步、扁平版生成与校验
-├── references/
-│   ├── theory.md         # 人情 / 面子 / 关系 的提炼框架
-│   └── cases.md          # 联网搜集的真实案例
-├── evals/
-│   └── case-tests.md     # 基于真实案例的效果测试
-├── examples/
-│   └── quick-start.md    # 常见场景速查
-└── LICENSE
-```
-
----
-
-## 来源说明
-
-这个仓库的表达形式，参考了以下传播演化序列中的代表项目：
-
-- [同事.skill](https://github.com/titanwings/colleague-skill)
-- [前任.skill](https://github.com/titanwings/ex-skill)
-- [老板.skill](https://github.com/nicepkg/boss-skill)
-- [女娲.skill](https://github.com/alchaincyf/nuwa-skill)
-- [huashu-skills](https://github.com/alchaincyf/huashu-skills)
-
-保留了它们共同的优点：
-
-- 标题和定位足够鲜明
-- README 先讲“为什么有用”，再讲“怎么安装”
-- Skill 不是语录合集，而是可执行的方法框架
-- 通过案例展示，而不是空泛宣称
-
----
-
-## 关于这个 fork
-
-本仓库是 [IvyYang1999/renqing-shigu-skill](https://github.com/IvyYang1999/renqing-shigu-skill) 的 fork（MIT）。上游内容一句没改，改动只在打包层：繁體版、`dist/` 扁平版、`docs/` 平台适配说明，以及守住字数预算的 CI。规则与案例的功劳属于原作者。
-
-## License
+上游的表達形式參考過 [同事.skill](https://github.com/titanwings/colleague-skill)、[前任.skill](https://github.com/titanwings/ex-skill)、[老板.skill](https://github.com/nicepkg/boss-skill)、[女娲.skill](https://github.com/alchaincyf/nuwa-skill)。
 
 [MIT](LICENSE)
