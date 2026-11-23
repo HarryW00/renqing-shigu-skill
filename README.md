@@ -110,6 +110,13 @@ git clone https://github.com/IvyYang1999/renqing-shigu-skill ~/.claude/skills/re
 
 把本仓库 clone 到对应的 skills 目录即可。
 
+### Grok / Muse / 纯聊天框
+
+- **Grok Build** 和 **Muse Code** 直接读这份 `SKILL.md`，不用改任何东西（两者都会扫描 `~/.claude/skills`；Muse Code 另外读 `~/.agents/skills`）。
+- **Grok 网页版**的 Custom Instructions、**Meta Muse app** 这类没有文件系统的客户端读不了 skill 文件，请用 [`dist/`](dist/) 里压平好的繁體版本。
+
+分平台步骤、字数上限和踩坑记录见 [docs/portable.md](docs/portable.md)（繁體）· [English](docs/portable.en.md)。
+
 ---
 
 ## 使用
@@ -242,8 +249,12 @@ git clone https://github.com/IvyYang1999/renqing-shigu-skill ~/.claude/skills/re
 
 ```text
 renqing-shigu-skill/
-├── SKILL.md              # Skill 主体
+├── SKILL.md              # Skill 主体（上游简体原文）
+├── SKILL.zh-Hant.md      # 繁體版（OpenCC 转换 + 人工校订）
 ├── README.md             # 项目说明
+├── dist/                 # 给聊天框用的扁平版（繁體，可直接粘贴）
+├── docs/                 # Grok / Muse / 其他平台适配说明
+├── scripts/              # 繁體同步、扁平版生成与校验
 ├── references/
 │   ├── theory.md         # 人情 / 面子 / 关系 的提炼框架
 │   └── cases.md          # 联网搜集的真实案例
@@ -274,6 +285,10 @@ renqing-shigu-skill/
 - 通过案例展示，而不是空泛宣称
 
 ---
+
+## 关于这个 fork
+
+本仓库是 [IvyYang1999/renqing-shigu-skill](https://github.com/IvyYang1999/renqing-shigu-skill) 的 fork（MIT）。上游内容一句没改，改动只在打包层：繁體版、`dist/` 扁平版、`docs/` 平台适配说明，以及守住字数预算的 CI。规则与案例的功劳属于原作者。
 
 ## License
 
