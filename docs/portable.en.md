@@ -1,51 +1,57 @@
 # Using this skill outside Claude Code
 
-`SKILL.md` follows the [Agent Skills](https://agentskills.io) format: YAML frontmatter plus Markdown, indexed by the `description` triggers and loaded on demand.
+繁體版說明：[portable.zh-Hant.md](portable.zh-Hant.md)
 
-Agents that speak that format — Claude Code, Grok Build, Muse Code — need **no changes at all**. Chat-only clients (Grok web, Meta Muse, ChatGPT, Gemini) have no filesystem and no skill index, so they need the skill flattened into a single system prompt. That is what `dist/` is for.
+This fork carries two lines:
 
-All new material in this fork is in Traditional Chinese. `SKILL.md` is kept as the upstream Simplified original so the fork can still merge cleanly; `SKILL.zh-Hant.md` is the converted edition (OpenCC s2tw plus manual review), and everything in `dist/` is generated from or written in Traditional Chinese.
+- **v1** (stable) — the Traditional Chinese edition of the upstream skill. It is a judgement checklist and returns a line, alternatives, and a short explanation.
+- **v2** (candidate) — the interaction model. Five variables decide the move; the reply has six parts, including what to say when the other side pushes back, which channel to use, and what to keep in writing.
+
+Both are standard `SKILL.md` files, so any client that speaks the format — Claude Code, Grok Build, Muse Code — runs them unchanged. Only chat-only clients need the flattened builds in `dist/`.
 
 ## Where to put it
 
 | Client | Reads SKILL.md | How | File |
 |---|---|---|---|
-| **Grok Build** (CLI) | Yes, Claude Code layout included | `~/.grok/skills/renqing-shigu/` or `.grok/skills/` in a repo; `~/.claude/skills/` also works | `SKILL.md` / `SKILL.zh-Hant.md` |
-| **Muse Code** (Meta developer agent) | Yes | `~/.agents/skills/`, `$XDG_CONFIG_HOME/muse/skills`, or `~/.claude/skills/` | same |
-| **Grok web / X** | No | Settings → Customize → Custom Instructions, or a dedicated Custom Agent | `dist/grok-custom-instructions.zh-Hant.txt` (~1,300 chars) |
-| **Meta Muse app** | No install path | New chat: paste `dist/chat-bootstrap.zh-Hant.md`, attach the skill body | `dist/chat-bootstrap.zh-Hant.md` |
-| **ChatGPT / Gemini / Claude web** | No | Same as above | `dist/chat-bootstrap.zh-Hant.md` |
+| **Grok Build** (CLI) | Yes, Claude Code layout included | `~/.grok/skills/<name>/` or `.grok/skills/` in a repo; `~/.claude/skills/` also works | `SKILL.md`, `SKILL.zh-Hant.md`, or `v2/SKILL.md` |
+| **Muse Code** (Meta developer agent) | Yes | `~/.agents/skills/<name>/`, `$XDG_CONFIG_HOME/muse/skills`, or `~/.claude/skills/` | same |
+| **Grok web / X** | No | Settings → Customize → Custom Instructions, or a dedicated Custom Agent | v1: `dist/v1/grok-custom-instructions.zh-Hant.txt` (1,321 chars)<br>v2: `dist/v2/grok-agent.zh-Hant.txt` (2,353 chars) |
+| **Meta Muse app** | No install path | New chat: paste `dist/v1/chat-bootstrap.zh-Hant.md` and attach the skill body | `dist/v1/chat-bootstrap.zh-Hant.md` |
+| **ChatGPT / Gemini / Claude web** | No | Same as above | same |
 
 ## Install
 
 ```bash
-git clone https://github.com/HarryW00/renqing-shigu-skill ~/.grok/skills/renqing-shigu
+# v1
 git clone https://github.com/HarryW00/renqing-shigu-skill ~/.agents/skills/renqing-shigu
-muse skills list     # renqing-shigu should appear
+
+# v2 (named renqing-shigu-v2 so both can coexist)
+git clone https://github.com/HarryW00/renqing-shigu-skill /tmp/renqing
+cp -R /tmp/renqing/v2 ~/.agents/skills/renqing-shigu-v2
+
+muse skills list     # renqing-shigu / renqing-shigu-v2 should appear
 ```
 
 In Grok Build, `/skills` opens the extensions panel; `/renqing-shigu` invokes it.
 
-## Why flattening is not just copy-paste
+## Why flattening is not copy-paste
 
-1. **Index layer.** The `description` is what tells an agent *when* to load the skill. A chat box has none, so the flat version must open with an explicit "use this when / never use it for" clause — otherwise it will answer "write me a Python script" with "acknowledge the person first".
-2. **File access.** `references/theory.md` and `references/cases.md` are read on demand. Chat clients cannot read them, so the flat version inlines the five judgement axes, five principles and the scene cheat-sheet.
-3. **Length budget.** Grok's Custom Instructions box is roughly 4,000 characters (check the counter in your UI). The skill body is 3,401 characters, so header plus body just fits; the short version exists for when you need to coexist with other instructions.
-
-Nothing else needed rewriting: the skill has no scripts, no tool calls, and no path references in its body.
+1. **Index layer.** The `description` tells an agent *when* to load the skill. A chat box has none, so the flat build must open with an explicit "use this when / never use it for" clause — otherwise it answers "write me a Python script" with "acknowledge the person first".
+2. **File access.** Chat clients cannot read `references/`, so the flat build inlines the rules. v2 keeps one example per second-move type and per opener in the body for the same reason.
+3. **Length budget.** Grok's Custom Instructions box is roughly 4,000 characters. v1 spends 3,580, v2 spends 2,353; both fit.
 
 ## Two traps
 
-- **Don't treat global Custom Instructions as an install.** It applies to every conversation, so Grok will start "saving face" while you debug code. Use a dedicated Custom Agent, or the short version with the opt-out clause intact.
+- **Don't treat global Custom Instructions as an install.** It applies to every conversation. Use a dedicated Custom Agent, or the short version with the opt-out clause intact.
 - **Chat boxes forget.** Re-paste in every new conversation. For install-once behaviour, use Muse Code or Grok Build.
 
 ## Contributing
 
-`SKILL.md` is the source of truth for the rules. `SKILL.zh-Hant.md` is generated by `scripts/sync_hant.py` and then reviewed by hand — add wording fixes to its `NORMALIZE` list so the next sync keeps them. Then:
+`SKILL.md` is the source of truth for v1; `SKILL.zh-Hant.md` is generated by `scripts/sync_hant.py` and reviewed by hand — add wording fixes to its `NORMALIZE` list. v2 is authored directly in Traditional Chinese and needs no sync step. Then:
 
 ```bash
-python scripts/build_dist.py          # regenerate dist/grok-agent.zh-Hant.txt
+python scripts/build_dist.py          # regenerate dist/v1 and dist/v2
 python scripts/build_dist.py --check  # what CI runs
 ```
 
-Character budgets and the presence of the core rules are checked mechanically. Reply quality depends on the model; issues with bad outputs are welcome.
+Budgets and rule markers are checked mechanically. Reply quality depends on the model; issues with bad outputs are welcome.
