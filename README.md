@@ -114,6 +114,7 @@ git clone https://github.com/IvyYang1999/renqing-shigu-skill ~/.claude/skills/re
 
 - **Grok Build** 和 **Muse Code** 直接读这份 `SKILL.md`，不用改任何东西（两者都会扫描 `~/.claude/skills`；Muse Code 另外读 `~/.agents/skills`）。
 - **Grok 网页版**的 Custom Instructions、**Meta Muse app** 这类没有文件系统的客户端读不了 skill 文件，请用 [`dist/`](dist/) 里压平好的繁體版本。
+- 实验中的 **v2** 在 [`v2/`](v2/)：五变量判断、第二手回应、开场模块，扁平版约 2,350 字元，未取代 v1。
 
 分平台步骤、字数上限和踩坑记录见 [docs/portable.md](docs/portable.md)（繁體）· [English](docs/portable.en.md)。
 

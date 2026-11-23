@@ -14,6 +14,8 @@ English speakers: see [portable.en.md](portable.en.md).
 
 ## 平台對照
 
+> v2（互動版）在 `v2/` 目錄，可獨立安裝：`git clone … ~/.grok/skills/renqing-shigu-v2`，再把 `v2/` 的內容放進去。聊天框用的扁平版是 `v2/dist/grok-agent.zh-Hant.txt`（2,353 字元）。v2 是候選版本，未取代 v1。
+
 | 平台 | 支援 SKILL.md | 放在哪 / 怎麼用 | 用哪個檔案 |
 |---|---|---|---|
 | **Grok Build**（CLI） | 支援，且相容 Claude Code 佈局 | `~/.grok/skills/renqing-shigu/` 或專案內 `.grok/skills/`；也可直接放 `~/.claude/skills/` | 原 `SKILL.md` 或 `SKILL.zh-Hant.md` |
